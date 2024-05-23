@@ -34,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private final int PICK_IMAGE_REQUEST = 71;
 
+    public static long startTime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadImagesFromFirebase(final PictureAdapter adapter) {
+        startTime = System.currentTimeMillis();
         DatabaseReference imagesRef = databaseReference.child("images");
         imagesRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -159,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
                 .addOnSuccessListener(taskSnapshot -> {
                     fileRef.getDownloadUrl()
                             .addOnSuccessListener(this::saveImageUriToDatabase);
+
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(MainActivity.this,
@@ -167,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void saveImageUriToDatabase(Uri uri) {
+        long start=System.currentTimeMillis();
         DatabaseReference imagesRef = databaseReference.child("images");
         String imageKey = imagesRef.push().getKey();
 
@@ -176,6 +181,13 @@ public class MainActivity extends AppCompatActivity {
 
         Toast.makeText(MainActivity.this,
                 "Image uploaded successfully", Toast.LENGTH_SHORT).show();
+        long end=System.currentTimeMillis();
+        long totaltime = end-start;
+
+        long seconds = totaltime / 1000;
+        long milliseconds = totaltime % 1000;
+        Toast.makeText(MainActivity.this,
+                "Time to upload images: " + seconds + "." + milliseconds + " seconds", Toast.LENGTH_LONG).show();
     }
 
 }

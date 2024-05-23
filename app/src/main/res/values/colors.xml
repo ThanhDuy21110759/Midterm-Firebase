@@ -2,4 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="blink">#e63f66</color>
+    <color name="light_blink">#fde6e9</color>
+    <color name="grid_background">#f7aab9</color>
 </resources>
